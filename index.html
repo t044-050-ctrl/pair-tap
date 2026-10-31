@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ペアタップ</title>
-    <meta property="og:title" content="ペアタップ">
-    <meta property="og:description" content="【自立活動】視覚探索/目と手の協応を育むことをねらいとしたマッチングゲームアプリです。">
-    <meta property="og:type" content="website">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -168,19 +165,54 @@
                 flex: 1 1 0%;
                 min-height: 0;
                 flex-direction: column;
-                gap: 5px;
+                gap: 4px;
                 margin-top: 0;
             }
 
+            /* 指令エリア：スマホ縦向きではマークを横一列に配置 */
             #fall-area {
                 width: 100%;
-                height: 22%;
-                min-height: 64px;
-                flex: 0 0 22%;
+                height: 34%;
+                min-height: 0;
+                flex: 0 0 34%;
+                overflow: hidden;
+            }
+
+            #fall-area > div:not([id^="target-mark-"]) {
+                flex-direction: row !important;
+                justify-content: center;
+                align-items: center;
+                gap: clamp(6px, 2vw, 14px);
+                width: 100%;
+            }
+
+            #fall-area > div[id^="target-mark-"] {
+                width: clamp(34px, 11vw, 58px);
+                height: clamp(34px, 11vw, 58px);
+                padding: 5px;
+                left: 50%;
+                margin-left: calc(clamp(34px, 11vw, 58px) / -2);
+            }
+
+            #fall-area > div[id^="target-mark-"]:nth-child(1) { left: 10%; margin-left: 0; }
+            #fall-area > div[id^="target-mark-"]:nth-child(2) { left: 30%; margin-left: 0; }
+            #fall-area > div[id^="target-mark-"]:nth-child(3) { left: 50%; margin-left: 0; }
+            #fall-area > div[id^="target-mark-"]:nth-child(4) { left: 70%; margin-left: 0; }
+            #fall-area > div[id^="target-mark-"]:nth-child(5) { left: 90%; margin-left: -100%; }
+
+            /* 解答パネル：画面の下半分を使い、横幅いっぱいに16マスを表示 */
+            #screen-game > div:nth-child(2) > div:nth-child(2) {
+                width: 100%;
+                height: 62%;
+                min-height: 0;
+                flex: 1 1 62%;
+                padding: 0;
+                align-items: center;
+                justify-content: center;
             }
 
             #answer-grid {
-                width: min(100%, calc(100dvh - 230px));
+                width: min(100%, calc(100dvh * 0.58));
                 max-width: none;
                 max-height: 100%;
                 height: auto;
@@ -836,6 +868,7 @@
                     el.id = `target-mark-${tm.targetId}`;
                     el.className = "absolute w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 p-2 bg-white/90 rounded-2xl border-2 border-pink-300 shadow-md flex items-center justify-center transition-opacity opacity-0 pointer-events-none";
                     el.style.top = `-80px`;
+                    el.style.left = `50%`;
                     el.innerHTML = createMarkSVG(tm.shape, tm.color);
                     area.appendChild(el);
                 });
